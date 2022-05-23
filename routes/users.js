@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
+const { ObjectId } = require('mongodb');
 
 // Kontrollera om användarnamn och lösenord stämmer överens 
 router.post("/", (req, res) => {
@@ -16,7 +17,7 @@ router.post("/", (req, res) => {
     // Om användaren har angett rätt och matchande uppgifter
     // Skicka med användarens id
     if(existingUser) {
-      return res.json({ "message": "success", "userId": existingUser._id })
+      return res.json({ "message": "success", "userId": existingUser._id, "subscriber": existingUser.subscriber })
 
     // Om fel uppgifter: error
     } else {
@@ -48,5 +49,19 @@ router.get("/", (req, res) => {
     res.json({ "message": "success", "resultat": results })
   })
 });
+
+
+// Starta prenumeration
+router.post("/subscribe", (req, res) => {
+
+  console.log("req.body.userID: " + req.body._id)
+
+  req.app.locals.db.collection("users").updateOne({"_id": ObjectId(req.body._id)}, {$set: {"email": req.body.email, "subscriber": true}})
+  .then(result => {
+    console.log(result);
+
+    res.json({ "message": "success" })
+  })
+})
 
 module.exports = router;
