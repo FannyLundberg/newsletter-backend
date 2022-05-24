@@ -13,6 +13,7 @@
     "localStorage": "^1.0.4",
     "mongodb": "^4.6.0",
     "morgan": "~1.9.1",
-    "node-localstorage": "^2.2.1"
+    "node-localstorage": "^2.2.1",
+    "store2": "^2.13.2"
   }
 }

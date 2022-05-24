@@ -1,8 +1,10 @@
 var express = require('express');
+// let store = require('store2');
 // const { LocalStorage } = require('node-localstorage');
 var router = express.Router();
 
-// const {localStorage} = require("node-localstorage");
+
+const {localStorage} = require("node-localstorage");
 // localStorage = new LocalStorage('./scratch'); 
 
 // const localStorage = require("localStorage");
@@ -13,13 +15,6 @@ var router = express.Router();
 //     localStorage = new LocalStorage('./scratch');
 // }
 
-const localStorage = require("localStorage");
-const { LocalStorage } = require('node-localstorage');
-
-// app.use(LocalStorage);
-
-// var LocalStorage = require('node-localstorage').LocalStorage,
-// localStorage = new LocalStorage('./scratch');
 
 // Styling
 let styling = "<link rel='stylesheet' href='/stylesheets/style.css'>";
@@ -49,7 +44,7 @@ router.get("/", (req, res) => {
 
                     document.getElementById("logInSection").remove();
 
-                    window.localStorage.setItem("loggedIn", "true");
+                    localStorage.setItem("loggedIn", true);
 
                     let heading = document.createElement("H2");
                     heading.innerText = "Hej Administratören, Du är nu inloggad!";
@@ -88,25 +83,33 @@ router.get("/", (req, res) => {
 // Visa alla användare och prenumeranter
 router.get("/showusers", (req, res) => {
 
+    // // Detta blir null
+    // console.log("Inloggad? " + localStorage.getItem("loggedIn"))
+
+    // // Detta blir undefiened
+    // console.log(LocalStorage["loggedIn"])
+
+    // // Detta blir false när det finns i ls (och när det inte finns)
+    // console.log("loggedIn" in localStorage)
+
+    // // Detta blir null, går inte med gröna LocalStorage
     // let loggedInAdmin = localStorage.getItem("loggedIn");
-
-    console.log("Inloggad? " + localStorage.getItem("loggedIn"))
-    // console.log(loggedInAdmin);
-
-
-    // let loggedInAdmin = localStorage.getItem("loggedIn");
-
-    if (LocalStorage.length > 0) {
-
-    // let loggedInAdmin = LocalStorage.getItem("loggedIn");
-
     // console.log(loggedInAdmin)
 
-    // if (window.localStorage) {
-    //     console.log("Hej från window ls")
-    // }
+    // // Längden blir 2 (oavsett om det finns i ls eller inte)
+    // console.log(LocalStorage.length)
 
-    // if (loggedInAdmin === true) {
+    // // Detta blir null
+    // console.log(localStorage.getItem('loggedIn'));
+
+
+    // store.get(loggedIn[alt])
+
+    // console.log(loggedIn)
+    // console.log(store.get(loggedIn[alt]))
+
+    // if (localStorage["loggedIn"]) {
+    if (localStorage == "loggedIn") {
 
         // Visa alla användare
         req.app.locals.db.collection("users").find().toArray()
