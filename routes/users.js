@@ -56,7 +56,7 @@ router.post("/subscribe", (req, res) => {
 
   console.log("req.body.userID: " + req.body._id)
 
-  req.app.locals.db.collection("users").updateOne({"_id": ObjectId(req.body._id)}, {$set: {"email": req.body.email, "subscriber": true}})
+  req.app.locals.db.collection("users").updateOne({"_id": ObjectId(req.body._id)}, {$set: {"subscriber": true}})
   .then(result => {
     console.log(result);
 
@@ -70,7 +70,7 @@ router.post("/unsubscribe", (req, res) => {
 
   console.log("req.body.userID: " + req.body._id)
 
-  req.app.locals.db.collection("users").updateOne({"_id": ObjectId(req.body._id)}, {$set: {"email": "", "subscriber": false}})
+  req.app.locals.db.collection("users").updateOne({"_id": ObjectId(req.body._id)}, {$set: {"subscriber": false}})
   .then(result => {
     console.log(result);
 

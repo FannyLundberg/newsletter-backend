@@ -1,18 +1,49 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   text-align: center;
-}
-
-a {
-  color: #00B7FF;
+  width: 100vw;
+  min-height: 100vh;
+  max-height: fit-content;
 }
 
 form {
-  margin-top: 10vh;
+  margin-top: 8vh;
 }
 
 label {
   display: block;
   margin-top: 2%;
+}
+
+button {
+  margin: 0 auto;
+  margin-top: 2%;
+  display: block;
+}
+
+div {
+  border: 1px solid black;
+  margin-top: 5%;
+}
+
+h3 {
+  margin-top: 5%;
+  margin-bottom: 2%;
+}
+
+h4 {
+  font-weight: 400;
+  padding: 1%;
+}
+
+p {
+  font-weight: 700;
+  margin-top: 2%;
+  margin-bottom: 5%;
 }
