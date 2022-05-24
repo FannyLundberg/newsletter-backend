@@ -1,12 +1,25 @@
 var express = require('express');
+// const { LocalStorage } = require('node-localstorage');
 var router = express.Router();
+
+// const {localStorage} = require("node-localstorage");
+// localStorage = new LocalStorage('./scratch'); 
+
+// const localStorage = require("localStorage");
 // const ls = require("node-localstorage").LocalStorage;
 
-if (typeof localStorage === "undefined" || localStorage === null) {
-    var LocalStorage = require('node-localstorage').LocalStorage;
-    localStorage = new LocalStorage('./scratch');
-}
+// if (typeof localStorage === "undefined" || localStorage === null) {
+//     var LocalStorage = require('node-localstorage').LocalStorage;
+//     localStorage = new LocalStorage('./scratch');
+// }
 
+const localStorage = require("localStorage");
+const { LocalStorage } = require('node-localstorage');
+
+// app.use(LocalStorage);
+
+// var LocalStorage = require('node-localstorage').LocalStorage,
+// localStorage = new LocalStorage('./scratch');
 
 // Styling
 let styling = "<link rel='stylesheet' href='/stylesheets/style.css'>";
@@ -36,14 +49,14 @@ router.get("/", (req, res) => {
 
                     document.getElementById("logInSection").remove();
 
-                    localStorage.setItem("loggedIn", "true");
+                    window.localStorage.setItem("loggedIn", "true");
 
                     let heading = document.createElement("H2");
-                    heading.innerText = "Hej Administratören i inloggat läge!";
+                    heading.innerText = "Hej Administratören, Du är nu inloggad!";
                     document.body.append(heading);
 
                     let showUsersBtn = document.createElement("button");
-                    showUsersBtn.innerText = "Visa alla användare";
+                    showUsersBtn.innerText = "Visa alla användare och prenumeranter";
                     showUsersBtn.id = "showUsersBtn";
                     document.body.append(showUsersBtn);
 
@@ -53,22 +66,11 @@ router.get("/", (req, res) => {
                         location.href = "/admin/showusers";
                     })
 
-                    let showMailBtn = document.createElement("button");
-                    showMailBtn.innerText = "Visa alla prenumeranter";
-                    showMailBtn.id = "showMailBtn";
-                    document.body.append(showMailBtn);
-
-                    document.getElementById("showMailBtn").addEventListener("click", () => {
-                        console.log("Klick på Visa alla mailadresser")
-
-                        location.href = "/admin/showsubscribers";
-                    })
-
                 } else {
                     console.log("Fel")
 
                     let wrongInput = document.createElement("p");
-                    wrongInput.innerText = "Fel uppgifter";
+                    wrongInput.innerText = "Fel uppgifter, vänligen prova igen.";
 
                     document.body.append(wrongInput);
                 }
@@ -86,9 +88,23 @@ router.get("/", (req, res) => {
 // Visa alla användare och prenumeranter
 router.get("/showusers", (req, res) => {
 
-    let loggedInAdmin = localStorage.getItem("loggedIn");
+    // let loggedInAdmin = localStorage.getItem("loggedIn");
 
-    console.log(loggedInAdmin)
+    console.log("Inloggad? " + localStorage.getItem("loggedIn"))
+    // console.log(loggedInAdmin);
+
+
+    // let loggedInAdmin = localStorage.getItem("loggedIn");
+
+    if (LocalStorage.length > 0) {
+
+    // let loggedInAdmin = LocalStorage.getItem("loggedIn");
+
+    // console.log(loggedInAdmin)
+
+    // if (window.localStorage) {
+    //     console.log("Hej från window ls")
+    // }
 
     // if (loggedInAdmin === true) {
 
@@ -136,33 +152,29 @@ router.get("/showusers", (req, res) => {
             `;
 
             res.send(printUsers + printSubscribers + styling)
+            })
         })
-            // res.send(printUsers)
-        })
-
-        
-
-    // } else {
-    //     res.send("Inte inloggad");
-    // }
-});
-
-
-// Visa prenumeranterna
-router.get("/showsubscribers", (req, res) => {
-
-    const loggedInAdmin = JSON.parse(localStorage.getItem("loggedIn"));
-
-    console.log(loggedInAdmin);
-
-    if (JSON.parse(localStorage.getItem("loggedIn")) === true) {
-
-        
-
     } else {
         res.send("Inte inloggad");
     }
 });
+
+
+// // Visa prenumeranterna
+// router.get("/showsubscribers", (req, res) => {
+
+//     const loggedInAdmin = JSON.parse(localStorage.getItem("loggedIn"));
+
+//     console.log(loggedInAdmin);
+
+//     if (JSON.parse(localStorage.getItem("loggedIn")) === true) {
+
+        
+
+//     } else {
+//         res.send("Inte inloggad");
+//     }
+// });
 
 
 // function showUsers() {
