@@ -9,9 +9,10 @@ body {
   width: 100vw;
   min-height: 100vh;
   max-height: fit-content;
-  background-image: url(../images/bildPPT.JPG);
+  background-image: url(../images/pptBild.JPG);
   background-size: cover;
   background-position: center;
+  background-color: black;
   color: white;
 }
 
@@ -53,11 +54,22 @@ button {
   margin: 0 auto;
   margin-top: 2%;
   display: block;
+  border-radius: 5px;
+  border: none;
+  padding: 1%;
+  background-color: rgb(184, 183, 182);
 }
 
 div {
+  margin: 0 auto;
   border: 1px solid black;
   margin-top: 5%;
+  width: 80vw;
+  background-color: rgba(105, 103, 103, 0.171);
+}
+
+h2 {
+  padding-top: 5%;
 }
 
 h3 {

@@ -12,6 +12,7 @@ router.get("/", (req, res) => {
     let logIn = `
         <section id="logInSection">
             <h2>Hej Administratör!</h2>
+            <h3>Vänligen logga in:</h3>
 
             <form>
                 <label for="adminName">Användarnamn: </label>
@@ -62,7 +63,7 @@ router.get("/loggedin", (req, res) => {
         </button>
     `;
 
-    res.send(printWelcome);
+    res.send(printWelcome + styling);
 })
 
 
@@ -129,7 +130,7 @@ router.get("/showusers", (req, res) => {
                 <a href='/admin'>Till inloggning</a>
             </button>
         `;
-        res.send(printNotLoggedIn);
+        res.send(printNotLoggedIn + styling);
     }
 });
 

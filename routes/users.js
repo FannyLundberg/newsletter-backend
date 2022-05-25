@@ -69,18 +69,6 @@ router.post("/newuser", (req, res) => {
 })
 
 
-// // Hämta alla användare
-// router.get("/", (req, res) => {
-
-//   req.app.locals.db.collection("users").find().toArray()
-//   .then(results => {
-//     console.log(results)
-    
-//     res.json({ "message": "success", "resultat": results })
-//   })
-// });
-
-
 // Starta prenumeration
 router.post("/subscribe", (req, res) => {
 

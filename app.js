@@ -36,17 +36,4 @@ app.use('/users', usersRouter);
 app.use('/admin', adminRouter);
 
 
-// app.get("/set", (req, res) => {
-
-//     res.cookie("admin", true);
-
-//     res.send("Kaka sparad")
-// });
-
-
-// app.get("/cookies", (req, res) => {
-
-//     res.send("Här är din kaka. admin: " + req.cookies["admin"]);
-// });
-
 module.exports = app;
