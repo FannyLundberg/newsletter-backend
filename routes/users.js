@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var CryptoJS = require("crypto-js");
 
 const { ObjectId } = require('mongodb');
 
@@ -11,7 +12,10 @@ router.post("/", (req, res) => {
     console.log(results);
 
     let existingUser = results.find((user) => {
-      return user.username == req.body.username && user.password == req.body.password
+
+      let decrypted = CryptoJS.AES.decrypt(user.password, "macarena").toString(CryptoJS.enc.Utf8)
+
+      return user.username == req.body.username && decrypted == req.body.password
     })
 
     // Om användaren har angett rätt och matchande uppgifter
@@ -27,8 +31,34 @@ router.post("/", (req, res) => {
 });
 
 
+// Se om användaren är en prenumerant 
+router.post("/subscription", (req, res) => {
+
+  req.app.locals.db.collection("users").find().toArray()
+  .then(results => {
+
+    let isUserSubscriber = results.find((userSubscriber) => {
+
+      return userSubscriber._id == req.body._id 
+    })
+
+    if(isUserSubscriber) {
+      return res.json({ "message": "success", "subscriber": isUserSubscriber.subscriber })
+
+    } else {
+      res.json({ "message": "error" })
+    }
+
+    console.log(results);
+  });
+});
+
+
 // Lägga till en ny användare
 router.post("/newuser", (req, res) => {
+
+  // Kryptering av lösenord
+  req.body.password = CryptoJS.AES.encrypt(req.body.password, "macarena").toString();
 
   req.app.locals.db.collection("users").insertOne(req.body)
   .then(result => {
@@ -39,16 +69,16 @@ router.post("/newuser", (req, res) => {
 })
 
 
-// Hämta alla användare
-router.get("/", (req, res) => {
+// // Hämta alla användare
+// router.get("/", (req, res) => {
 
-  req.app.locals.db.collection("users").find().toArray()
-  .then(results => {
-    console.log(results)
+//   req.app.locals.db.collection("users").find().toArray()
+//   .then(results => {
+//     console.log(results)
     
-    res.json({ "message": "success", "resultat": results })
-  })
-});
+//     res.json({ "message": "success", "resultat": results })
+//   })
+// });
 
 
 // Starta prenumeration

@@ -1,19 +1,6 @@
 var express = require('express');
-// let store = require('store2');
-// const { LocalStorage } = require('node-localstorage');
+const { clearCookie } = require('express/lib/response');
 var router = express.Router();
-
-
-const {localStorage} = require("node-localstorage");
-// localStorage = new LocalStorage('./scratch'); 
-
-// const localStorage = require("localStorage");
-// const ls = require("node-localstorage").LocalStorage;
-
-// if (typeof localStorage === "undefined" || localStorage === null) {
-//     var LocalStorage = require('node-localstorage').LocalStorage;
-//     localStorage = new LocalStorage('./scratch');
-// }
 
 
 // Styling
@@ -42,24 +29,7 @@ router.get("/", (req, res) => {
                 if (adminName.value === "admin" && adminPassword.value ===  "admin") {
                     console.log("Rätt")
 
-                    document.getElementById("logInSection").remove();
-
-                    localStorage.setItem("loggedIn", true);
-
-                    let heading = document.createElement("H2");
-                    heading.innerText = "Hej Administratören, Du är nu inloggad!";
-                    document.body.append(heading);
-
-                    let showUsersBtn = document.createElement("button");
-                    showUsersBtn.innerText = "Visa alla användare och prenumeranter";
-                    showUsersBtn.id = "showUsersBtn";
-                    document.body.append(showUsersBtn);
-
-                    document.getElementById("showUsersBtn").addEventListener("click", () => {
-                        console.log("Klick på Visa alla användare")
-
-                        location.href = "/admin/showusers";
-                    })
+                    location.href = "/admin/loggedin";
 
                 } else {
                     console.log("Fel")
@@ -76,40 +46,30 @@ router.get("/", (req, res) => {
             }
         </script>
     `;
+
+    res.clearCookie("admin");
     res.send(logIn + styling)
+})
+
+router.get("/loggedin", (req, res) => {
+
+    res.cookie("admin", true);
+
+    let printWelcome = `
+        <h2>Välkommen Administratören, Du är nu inloggad!</h2>
+        <button>
+            <a href='/admin/showusers'>Visa alla användare och prenumerater</a>
+        </button>
+    `;
+
+    res.send(printWelcome);
 })
 
 
 // Visa alla användare och prenumeranter
 router.get("/showusers", (req, res) => {
 
-    // // Detta blir null
-    // console.log("Inloggad? " + localStorage.getItem("loggedIn"))
-
-    // // Detta blir undefiened
-    // console.log(LocalStorage["loggedIn"])
-
-    // // Detta blir false när det finns i ls (och när det inte finns)
-    // console.log("loggedIn" in localStorage)
-
-    // // Detta blir null, går inte med gröna LocalStorage
-    // let loggedInAdmin = localStorage.getItem("loggedIn");
-    // console.log(loggedInAdmin)
-
-    // // Längden blir 2 (oavsett om det finns i ls eller inte)
-    // console.log(LocalStorage.length)
-
-    // // Detta blir null
-    // console.log(localStorage.getItem('loggedIn'));
-
-
-    // store.get(loggedIn[alt])
-
-    // console.log(loggedIn)
-    // console.log(store.get(loggedIn[alt]))
-
-    // if (localStorage["loggedIn"]) {
-    if (localStorage == "loggedIn") {
+    if (req.cookies["admin"]) {
 
         // Visa alla användare
         req.app.locals.db.collection("users").find().toArray()
@@ -117,6 +77,7 @@ router.get("/showusers", (req, res) => {
             console.log(users)
 
             let printUsers = `
+                <h2>Alla användare och prenumeranter</h2>
                 <div>
                 <h3>Alla användare</h3>
             `;
@@ -132,69 +93,45 @@ router.get("/showusers", (req, res) => {
                 </div>
             `;
 
-
             // Visa prenumeranterna
             req.app.locals.db.collection("users").find({"subscriber": true}).toArray()
             .then(subscribers => {
-            console.log(subscribers)
+                console.log(subscribers)
 
-            let printSubscribers = `
-                <div>
-                <h3>Alla prenumeranter</h3>
-            `;
-
-            for (let i = 0; i < subscribers.length; i++) {
-                printSubscribers += `
-                    <span> ${subscribers[i].username}, </span>
+                let printSubscribers = `
+                    <div>
+                    <h3>Alla prenumeranter</h3>
                 `;
-            }
 
-            printSubscribers += `
-                <p> Antal prenumeranter: ${subscribers.length} </p>
-                </div>
-            `;
+                for (let i = 0; i < subscribers.length; i++) {
+                    printSubscribers += `
+                        <span> ${subscribers[i].username}, </span>
+                    `;
+                }
 
-            res.send(printUsers + printSubscribers + styling)
+                printSubscribers += `
+                    <p> Antal prenumeranter: ${subscribers.length} </p>
+                    </div>
+
+                    <button>
+                        <a href='/admin'>Logga ut</a>
+                    </button>
+                `;
+                res.send(printUsers + printSubscribers + styling)
             })
         })
+
     } else {
-        res.send("Inte inloggad");
+        
+        let printNotLoggedIn = `
+            <p>Du är inte inloggad. Vänligen logga in.</p>
+            <button>
+                <a href='/admin'>Till inloggning</a>
+            </button>
+        `;
+        res.send(printNotLoggedIn);
     }
 });
-
-
-// // Visa prenumeranterna
-// router.get("/showsubscribers", (req, res) => {
-
-//     const loggedInAdmin = JSON.parse(localStorage.getItem("loggedIn"));
-
-//     console.log(loggedInAdmin);
-
-//     if (JSON.parse(localStorage.getItem("loggedIn")) === true) {
-
-        
-
-//     } else {
-//         res.send("Inte inloggad");
-//     }
-// });
-
-
-// function showUsers() {
-//     res.redirect("/admin/loggedin");
-// }
-
-
-// router.get("/loggedin", (req, res) => {
-
-//     let loggedIn = `
-//         <section id="logInSection">
-//             <h2>Hej Administratören i inloggat läge!</h2>
-//         </section>
-//     `;
-
-//     res.send(loggedIn + styling)
-// })
 
 
 module.exports = router;
