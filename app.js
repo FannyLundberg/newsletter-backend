@@ -12,7 +12,7 @@ const cors = require("cors");
 
 const MongoClient = require("mongodb").MongoClient;
 
-MongoClient.connect("mongodb://localhost:27017", {
+MongoClient.connect("mongodb+srv://FannyLundberg:FanLunDev1991@cluster0.cpxb8.mongodb.net/newsletter?retryWrites=true&w=majority", {
     useUnifiedTopology: true
 })
 .then(client => {
