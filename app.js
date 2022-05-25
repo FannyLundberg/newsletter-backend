@@ -12,9 +12,8 @@ const cors = require("cors");
 
 const MongoClient = require("mongodb").MongoClient;
 
-// MongoClient.connect("mongodb+srv://FannyLundberg:FanLunDev1991@cluster0.cpxb8.mongodb.net/?retryWrites=true&w=majority", {
-MongoClient.connect(process.env.MONGDO_URI, {
-useUnifiedTopology: true
+MongoClient.connect("mongodb+srv://FannyLundberg:FanLunDev1991@cluster0.cpxb8.mongodb.net/newsletter?retryWrites=true&w=majority", {
+    useUnifiedTopology: true
 })
 .then(client => {
     console.log("Uppkopplad mot databasen")
