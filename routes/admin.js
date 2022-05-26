@@ -68,12 +68,12 @@ router.get("/loggedin", (req, res) => {
 
 
 // Visa alla användare och prenumeranter
-router.get("/showusers", (req, res) => {
+router.get("/showusers", async (req, res) => {
 
     if (req.cookies["admin"]) {
 
         // Visa alla användare
-        req.app.locals.db.collection("users").find().toArray()
+        await req.app.locals.db.collection("users").find().toArray()
         .then(users => {
             console.log(users)
 
