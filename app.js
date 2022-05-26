@@ -16,11 +16,11 @@ MongoClient.connect("mongodb+srv://FannyLundberg:FanLunDev1991@cluster0.cpxb8.mo
     useUnifiedTopology: true
 })
 .then(client => {
-    console.log("Uppkopplad mot databasen")
+    console.log("Uppkopplad mot databasen", client)
 
-    const db = client.db("newsletter");
+    // const db = client.db("newsletter");
 
-    app.locals.db = db;
+    // app.locals.db = db;
 })
 
 app.use(cors());
