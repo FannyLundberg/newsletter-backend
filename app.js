@@ -12,15 +12,15 @@ const cors = require("cors");
 
 const MongoClient = require("mongodb").MongoClient;
 
-MongoClient.connect("mongodb+srv://FannyLundberg:FanLunDev1991@cluster0.cpxb8.mongodb.net/newsletter?retryWrites=true&w=majority", {
+MongoClient.connect("mongodb+srv://FannyLundberg:FanLunDev1991@cluster0.cpxb8.mongodb.net/?retryWrites=true&w=majority", {
     useUnifiedTopology: true
 })
 .then(client => {
     console.log("Uppkopplad mot databasen", client)
 
-    // const db = client.db("newsletter");
+    const db = client.db("newsletter");
 
-    // app.locals.db = db;
+    app.locals.db = db;
 })
 
 app.use(cors());
