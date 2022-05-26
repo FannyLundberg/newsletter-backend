@@ -9,6 +9,7 @@ var adminRouter = require('./routes/admin');
 
 var app = express();
 const cors = require("cors");
+app.use(cors());
 
 const MongoClient = require("mongodb").MongoClient;
 
@@ -22,8 +23,6 @@ MongoClient.connect("mongodb+srv://FannyLundberg:FanLunDev1991@cluster0.cpxb8.mo
 
     app.locals.db = db;
 })
-
-app.use(cors());
 
 app.use(logger('dev'));
 app.use(express.json());
